@@ -12,7 +12,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: bourbabax256
-      MYSQL_DATABASE: clients
+      MYSQL_DATABASE: serverdb
       MYSQL_USER: www
       MYSQL_PASSWORD: bourbabax255
     ports:
