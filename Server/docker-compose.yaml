@@ -6,9 +6,13 @@ services:
       - "8080:80"
   db:
     container_name: bourbabax-db
-    image: mysql
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: clients
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
 
