@@ -1,0 +1,24 @@
+[Unit]
+Description=AirNet Service
+After=network.target
+
+[Service]
+ExecStart=/path/to/register.sh
+Restart=always
+User=username
+Group=groupname
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/path/to/
+
+[Install]
+WantedBy=multi-user.target
+
+# Replace /path/to/register.sh with the actual path to your register.sh script. Also, replace username and groupname with the actual username and group that the service should run under.
+# Save this file as register.service in the /etc/systemd/system/ directory.
+# Then, you can start the service with:
+# sudo systemctl start airnet
+# And enable it to start on boot with:
+# sudo systemctl enable airnet
+# You can check the status of the service with:
+# sudo systemctl status airnet
+# Please note that you need to have root privileges to create and manage systemd services.
