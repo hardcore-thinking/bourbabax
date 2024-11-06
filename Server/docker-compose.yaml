@@ -15,7 +15,7 @@ services:
       - "2222:22" # SSH port forwarded to 2222 on host
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./logs/nginx:/var/log/nginx 
+      - ./logs/nginx:/var/log/nginx
     networks:
       - server-network
       - ./nginx/index.html:/var/www/html/index.html
@@ -47,7 +47,6 @@ services:
       PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - server-network
-
 networks:
   server-network:
     driver: bridge
