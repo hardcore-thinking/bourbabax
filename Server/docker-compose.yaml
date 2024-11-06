@@ -6,6 +6,8 @@ services:
       - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - server-network
   db:
     container_name: bourbabax-db
     image: mysql:latest
@@ -15,8 +17,15 @@ services:
       MYSQL_DATABASE: serverdb
       MYSQL_USER: www
       MYSQL_PASSWORD: bourbabax255
+    volumes:
+      - ./database/script-db.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database/data:/var/lib/mysql
+      - ./database:/app
     ports:
       - "3306:3306"
-    volumes:
-      - ./database/data:/var/lib/mysql
-      - ./database:/app/shared
+    networks:
+      - server-network
+
+networks:
+  server-network:
+    driver: bridge
