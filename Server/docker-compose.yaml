@@ -26,6 +26,19 @@ services:
       - ./database:/app
     networks:
       - server-network
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: bourbabax-phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: www
+      PMA_PASSWORD: bourbabax255
+    networks:
+      - server-network
 
 networks:
   server-network:
