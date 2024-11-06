@@ -3,10 +3,8 @@ Description=AirNet Service
 After=network.target
 
 [Service]
-ExecStart=/path/to/register.sh
+ExecStart=/bin/register.sh
 Restart=always
-User=username
-Group=groupname
 Environment=PATH=/usr/bin:/usr/local/bin
 WorkingDirectory=/path/to/
 

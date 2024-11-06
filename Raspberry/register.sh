@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 HOST="hub.bzctoons.net"
 USER="register"
 API_REGISTER_ENDPOINT="http://$HOST/api/register"
@@ -8,14 +7,15 @@ MAC=$(cat /sys/class/net/eth0/address)
 
 # read locals ports from config file
 # LOCAL_PORTS=$(cat /etc/airnet/ports)
-LOCAL_PORTS="22,80,443,8327"
+if read -r 
+ssh_key="22,80,443,8327"
 
-echo "Local ports: $LOCAL_PORTS"
+echo "Local ports: $ssh_key"
 # create an array of ports
-IFS=',' read -ra LOCAL_PORTS <<< "$LOCAL_PORTS"
+IFS=',' read -ra ssh_key <<< "$ssh_key"
 
 # Get ports from API with the user agent and the mac address
-REMOTE_PORTS=$(curl -X POST -d "mac=$MAC&ports=$LOCAL_PORTS" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
+REMOTE_PORTS=$(curl -X POST -d "mac=$MAC&ssh_key=$ssh_key" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
 
 echo "Getting ports from API: $API_REGISTER_ENDPOINT, mac=$MAC, ports=$LOCAL_PORTS"
 # REMOTE_PORTS=8022,8080,8443,18327
