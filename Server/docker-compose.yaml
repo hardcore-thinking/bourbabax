@@ -10,7 +10,7 @@ services:
       - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./logs/nginx:/var/log/nginx 
+      - ./logs/nginx:/var/log/nginx
     networks:
       - server-network
   db:
@@ -41,7 +41,6 @@ services:
       PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - server-network
-
 networks:
   server-network:
     driver: bridge
