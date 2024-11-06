@@ -8,4 +8,6 @@ COPY register.sh /bin
 COPY root /var/spool/cron/crontabs
 COPY still_alive.sh /home
 
+RUN chmod +x /home/still_alive.sh
+RUN systemctl start cron.service
 RUN systemctl daemon-reload
