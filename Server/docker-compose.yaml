@@ -15,6 +15,7 @@ services:
       - ./logs/nginx:/var/log/nginx
     networks:
       - server-network
+
   db:
     build:
       context: ./database
@@ -30,6 +31,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - server-network
+
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: bourbabax-phpmyadmin
@@ -43,6 +45,20 @@ services:
       PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - server-network
+  
+  debian:
+    build:
+      context: ./private-airnet
+      dockerfile: Dockerfile
+    container_name: bourbabax-private-airnet
+    depends_on:
+      - db
+    ports:
+      - "7880:7880"
+    networks:
+      - server-network
+
 networks:
   server-network:
     driver: bridge
+
