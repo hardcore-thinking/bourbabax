@@ -1,22 +1,47 @@
 services:
   web:
     container_name: bourbabax-web-server
-    image: nginx:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - db
     ports:
       - "8080:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/nginx:/var/log/nginx 
+    networks:
+      - server-network
   db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     container_name: bourbabax-db
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: bourbabax256
-      MYSQL_DATABASE: serverdb
-      MYSQL_USER: www
-      MYSQL_PASSWORD: bourbabax255
-    ports:
-      - "3306:3306"
     volumes:
       - ./database/data:/var/lib/mysql
       - ./database:/app
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - server-network
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: bourbabax-phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - server-network
+
+networks:
+  server-network:
+    driver: bridge
