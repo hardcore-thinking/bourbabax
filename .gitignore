@@ -1,1 +1,3 @@
 /Server/database/data
+/Server/logs*
+Server/logs/nginx/error.log
