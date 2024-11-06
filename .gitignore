@@ -1,5 +1,7 @@
 /Server/database/data
 /Server/logs
-Server/logs/nginx/access.log
-Server/logs/nginx/error.log
+/Server/logs/nginx/access.log
+/Server/logs/nginx/error.log
+/Server/raspberry-test/
 .env
+
