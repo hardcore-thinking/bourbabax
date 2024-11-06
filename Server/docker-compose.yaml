@@ -1,48 +1,56 @@
 services:
   web:
+    container_name: bourbabax-web-server
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    container_name: bourbabax-web-server
+    
     depends_on:
       - db
+    
     ports:
       - "80:80" # HTTP
       - "443:443" # HTTPS
       - "2222:22" # SSH port forwarded to 2222 on host
+    
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./logs/nginx:/var/log/nginx
+    
     networks:
       - server-network
-
   db:
     build:
       context: ./database
       dockerfile: Dockerfile
+
     container_name: bourbabax-db
     volumes:
       - ./database/data:/var/lib/mysql
       - ./database:/app
+    
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    
     networks:
       - server-network
-
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: bourbabax-phpmyadmin
     depends_on:
       - db
+    
     ports:
       - "8081:80"
+    
     environment:
       PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    
     networks:
       - server-network
   
