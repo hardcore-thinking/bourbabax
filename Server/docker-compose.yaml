@@ -1,5 +1,8 @@
 services:
   web:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     container_name: bourbabax-web-server
     build:
       context: ./nginx
@@ -7,12 +10,15 @@ services:
     depends_on:
       - db
     ports:
-      - "8080:80"
+      - "80:80" # HTTP
+      - "443:443" # HTTPS
+      - "2222:22" # SSH port forwarded to 2222 on host
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./logs/nginx:/var/log/nginx 
     networks:
       - server-network
+      - ./nginx/index.html:/var/www/html/index.html
   db:
     build:
       context: ./database
