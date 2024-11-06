@@ -1,6 +1,7 @@
 FROM debian
 
-EXPOSE 2222:22
+EXPOSE 22 80 443 8022 8080 8327 8443 18327
+RUN apt-get -y update; apt-get -y install curl autossh
 
 COPY airnet.service /var/www/
-COPY register.sh /var/www
+COPY register.sh /bin
