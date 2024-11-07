@@ -5,3 +5,4 @@
 /Server/raspberry-test/
 .env
 
+Server/private-airnet/authorized_keys
