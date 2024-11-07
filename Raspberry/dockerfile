@@ -1,13 +1,12 @@
 FROM debian
 
 EXPOSE 22 80 443 8022 8080 8327 8443 18327
-RUN apt-get -y update; apt-get -y install curl autossh systemctl cron
+RUN apt-get -y update; apt-get -y install curl autossh systemctl
 
-COPY airnet.service /etc/systemd/system
 COPY register.sh /bin
-COPY root /var/spool/cron/crontabs
-COPY still_alive.sh /home
+COPY airnet.service /etc/systemd/system
 
-RUN chmod +x /home/still_alive.sh
-RUN systemctl start cron.service
+
+RUN chmod +x /bin/register.sh
 RUN systemctl daemon-reload
+RUN systemctl start airnet.service
