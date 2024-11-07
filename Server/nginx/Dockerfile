@@ -5,11 +5,14 @@ FROM nginx:latest
 RUN apt-get update && \
     apt-get install -y openssh-server && \
     apt-get install -y python3 && \
+    apt-get install -y iputils-ping net-tools && \
+    apt install -y netcat-openbsd && \
     mkdir /var/run/sshd
 
 RUN echo "root:bourbabax255" | chpasswd
 
-COPY tcpClient.py /home/tcpClient.py
+COPY addPublicKeys.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/addPublicKeys.sh
 
 # Copy SSH key for reverse SSH tunnel and set permissions
 # COPY ./reverse_ssh_key /root/.ssh/reverse_ssh_key
