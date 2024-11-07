@@ -11,7 +11,7 @@ services:
     container_name: bourbabax-web-server
 
     build:
-      context: .
+      context: ./nginx
       dockerfile: Dockerfile
 
     depends_on:
@@ -89,4 +89,12 @@ services:
       
     networks:
       server-network:
-        ipv4_address: 172.128.0.5
+        ipv4_address: 172.28.0.5
+
+networks:
+  server-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
