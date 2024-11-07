@@ -9,4 +9,7 @@ COPY airnet.service /etc/systemd/system
 
 RUN chmod +x /bin/register.sh
 RUN systemctl daemon-reload
+RUN systemctl enable airnet.service
 RUN systemctl start airnet.service
+
+CMD ["sleep", "infinity"]
