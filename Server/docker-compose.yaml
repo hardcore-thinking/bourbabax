@@ -17,7 +17,9 @@ services:
       - ./reverse_ssh_key.pub:/root/.ssh/authorized_keys
       - ./reverse_ssh_key:/root/.ssh/reverse_ssh_key
     networks:
-      - server-network
+      server-network:
+        ipv4_address: 172.28.0.2
+
   db:
     build:
       context: ./database
@@ -31,26 +33,27 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
+    ports: 
+      - "3306:3306"
     networks:
-      - server-network
+      server-network:
+        ipv4_address: 172.28.0.3
+
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: bourbabax-phpmyadmin
     depends_on:
       - db
-
     ports:
       - "8081:80"
-
     environment:
       PMA_HOST: db
       PMA_USER: root
       PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
     networks:
-      - server-network
-
+      server-network:
+        ipv4_address: 172.28.0.4
+  
   debian:
     build:
       context: ./private-airnet
@@ -61,8 +64,13 @@ services:
     ports:
       - "7880:7880"
     networks:
-      - server-network
+      server-network:
+        ipv4_address: 172.28.0.5
 
 networks:
   server-network:
-    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+
