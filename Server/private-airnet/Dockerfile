@@ -5,11 +5,12 @@ RUN apt-get update && \
     apt-get -y install curl autossh systemctl cron netcat-openbsd nano python3 && \
     apt-get -y install iputils-ping net-tools
 
-# COPY ./authorized_keys /root/.ssh/authorized_keys
+COPY ./authorized_keys /root/.ssh/authorized_keys
 
-COPY tcpServerListenor.py /home/tcpServerListenor.py
+WORKDIR /usr/local/bin
+COPY ./tcpListener.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/tcpListener.sh
 
 EXPOSE 7880
 
-CMD ["python3", "/home/tcpServerListenor.py"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["/usr/local/bin/tcpListener.sh"]
