@@ -11,7 +11,7 @@ setup(){
 ## Fonction d'envoie du ping
 ping(){
     setup
-    declare -i count=0
+    count=0
     while true
     do
         count+=1 
@@ -27,6 +27,7 @@ main(){
     # read locals ports from config file
     # LOCAL_PORTS=$(cat /etc/airnet/ports)
     # if read -r 
+    ssh 
     ssh_key="22,80,443,8327"
     # fi
 
