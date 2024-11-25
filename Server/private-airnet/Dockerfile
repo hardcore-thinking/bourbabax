@@ -11,8 +11,6 @@ RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
 RUN pip install --no-cache-dir mysql-connector-python
 
-COPY ./authorized_keys /root/.ssh/authorized_keys
-
 WORKDIR /usr/local/bin
 COPY ./tcp_service.sh /usr/local/bin
 COPY ./get_public_keys.py /usr/local/bin
