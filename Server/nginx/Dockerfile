@@ -17,8 +17,8 @@ RUN chmod +x /usr/local/bin/addPublicKeys.sh
 
 # Copy SSH key for reverse SSH tunnel and set permissions
 # COPY ./reverse_ssh_key /root/.ssh/reverse_ssh_key
-RUN touch /root/.ssh/reverse_ssh_key
-RUN chmod 600 /root/.ssh/reverse_ssh_key
+# RUN touch /root/.ssh/reverse_ssh_key
+# RUN chmod 600 /root/.ssh/reverse_ssh_key
 
 # Expose necessary ports
 EXPOSE 80 443 22 2222
