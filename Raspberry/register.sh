@@ -1,16 +1,24 @@
 #!/bin/bash
 
+generate_ssh_key(){
+    if [ loggingMode == "NORMAL" || loggingMode == "DEBUG" ]; then
+        echo "Generating SSH key"
+    fi
+    ssh-keygen -t rsa  -f /root/.ssh/id_rsa -N ""
+}
+
 setup(){
     HOST="hub.bzctoons.net"
-    USER="register"
+    USER="root"
     API_REGISTER_ENDPOINT="http://$HOST/api/register"
     MAC=$(cat /sys/class/net/eth0/address)
 
+    generate_ssh_key
 }
 
-## Fonction d'envoie du ping
+## Fonction d'envoi du ping
 ping(){
-    setup
+    
     count=0
     while true
     do
@@ -21,15 +29,36 @@ ping(){
     done
 }
 
-
-
 main(){
     # read locals ports from config file
     # LOCAL_PORTS=$(cat /etc/airnet/ports)
-    # if read -r 
-    ssh 
-    ssh_key="22,80,443,8327"
-    # fi
+    # read ssh key from file
+    if [ -f /root/.ssh/id_rsa.pub ]; then
+        ssh_key=$(cat /root/.ssh/id_rsa.pub)
+    else
+        echo "SSH key not found, generating a new one."
+        generate_ssh_key
+        ssh_key=$(cat /root/.ssh/id_rsa.pub)
+    fi
+
+    # Parse options
+    while getopts ":dq" opt; do
+    case $opt in
+        d)
+            loggingMode="DEBUG"
+            ;;
+        q)
+            loggingMode="QUIET"
+            ;;
+        *)
+            echo "Usage: $0 [-d] [-q]"
+            exit 1
+            ;;
+    esac
+    done
+    
+    setup
+
 
     echo "Local ports: $ssh_key"
     # create an array of ports
@@ -55,6 +84,7 @@ main(){
             autossh -M 0 -f -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -R $REMOTE_PORT:localhost:$LOCAL_PORT $USER@$HOST
         fi
     done
+    ping
 }
 
-ping
+main
