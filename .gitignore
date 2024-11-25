@@ -4,5 +4,5 @@
 /Server/logs/nginx/error.log
 /Server/raspberry-test/
 .env
-
+/Server/.ssh
 Server/private-airnet/authorized_keys
