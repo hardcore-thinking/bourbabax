@@ -5,6 +5,5 @@
 /Server/raspberry-test/
 .env
 /Server/.ssh
-/Server/
 
 Server/private-airnet/authorized_keys

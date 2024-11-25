@@ -1,0 +1,16 @@
+api:
+container_name: bourbabax-api
+restart: always
+
+build:
+  context: ./api
+  dockerfile: Dockerfile
+
+depends_on:
+  - db
+  
+ports:
+  - "3000:8000"
+
+volumes:
+  - ./api:/app
