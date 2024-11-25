@@ -3,8 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', function (Request $request) {
-
+Route::post('/register/{mac}', function (Request $request, string $mac) {
+    return "Registering device with MAC {$mac}";
 });
 
 Route::get('/ping/{mac}', function (Request $request, string $mac) {
