@@ -1,8 +1,8 @@
-# bourbabax
+# Bourbabax-airnet
 
 ## Sommaire
 
-- [bourbabax](#bourbabax)
+- [Bourbabax-airnet](#bourbabax-airnet)
   - [Sommaire](#sommaire)
   - [I. Introduction](#i-introduction)
   - [II. To Do List](#ii-to-do-list)
