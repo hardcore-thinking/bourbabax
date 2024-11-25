@@ -10,3 +10,9 @@ CREATE TABLE IF NOT EXISTS `raspberries` (
     `ssh_key` VARCHAR(255),
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+    `id` BLOB(100) NOT NULL,
+    `payload` BLOB(1024) NOT NULL,
+    PRIMARY KEY (`id`)
+);

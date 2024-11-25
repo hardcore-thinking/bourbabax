@@ -4,7 +4,7 @@
 PORT=7880                                          # Port d'écoute
 AUTHORIZED_KEYS_FILE="/root/.ssh/authorized_keys"  # Fichier pour les clés SSH
 ALLOWED_COMMAND="airnet:add-public-keys"           # Commande autorisée
-UPDATE_DB_SCRIPT="/usr/local/bin/update_db.py"     # Script Python à exécuter
+UPDATE_DB_SCRIPT="/usr/local/bin/get_public_keys.py"     # Script Python à exécuter
 
 # Assurez-vous que le fichier des clés existe
 mkdir -p "$(dirname "$AUTHORIZED_KEYS_FILE")"
