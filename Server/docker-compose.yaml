@@ -48,7 +48,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
-    ports: 
+    ports:
       - "3308:3306"
 
     networks:
@@ -71,7 +71,7 @@ services:
     networks:
       server-network:
         ipv4_address: 172.128.0.4
-  
+
   debian:
     build:
       context: ./private-airnet
@@ -84,5 +84,3 @@ services:
     networks:
       server-network:
         ipv4_address: 172.128.0.5
-
-
