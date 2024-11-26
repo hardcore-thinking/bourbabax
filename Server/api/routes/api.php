@@ -5,14 +5,14 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
 
-Route::get('/register', function (Request $request, string $mac) {
-    
+Route::get('/register/{mac}', function (Request $request, string $mac) {
+    return "Registering {$mac}";
 });
 
 Route::get('/heartbeat', function (Request $request, string $mac) {
-    return $reponse->json(["message", "Heartbeat"]);  
+    return "Heartbeat from {$mac}";  
 });
 
 Route::get('/manage-ports', function (Request $request) {
-
+    return "Managing ports";
 });
