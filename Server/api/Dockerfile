@@ -14,6 +14,7 @@ RUN apt upgrade
 RUN apt install composer npm php8.2-curl php8.2-mysql php-dom openssl -y
 
 RUN npm install
+RUN composer install
 
 COPY ./php.ini /etc/php/8.2/cli/
 
