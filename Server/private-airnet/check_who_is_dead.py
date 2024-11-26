@@ -2,6 +2,8 @@ import mysql.connector
 from datetime import datetime
 import time 
 
+time.sleep(60)
+
 conn = mysql.connector.connect(
     host="bourbabax-db",
     user="www",

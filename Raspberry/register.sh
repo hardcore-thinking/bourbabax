@@ -10,21 +10,21 @@ generate_ssh_key(){
 setup(){
     HOST="hub.bzctoons.net"
     USER="root"
-    API_REGISTER_ENDPOINT="http://$HOST/api/register"
+    API_REGISTER_ENDPOINT="http://$HOST/api/$1"
     MAC=$(cat /sys/class/net/eth0/address)
-
+    echo $API_REGISTER_ENDPOINT
+    exit 1
     generate_ssh_key
 }
 
 ## Fonction d'envoi du ping
 ping(){
-    
+    setup("heartbeat")
     count=0
     while true
     do
         count+=1 
-        echo "$HOST$count" > /home/toto
-        # curl -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT
+        curl -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT
         sleep 1m
     done
 }
@@ -57,7 +57,7 @@ main(){
     esac
     done
     
-    setup
+    setup("register")
 
 
     echo "Local ports: $ssh_key"
