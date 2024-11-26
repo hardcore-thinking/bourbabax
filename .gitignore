@@ -5,6 +5,7 @@
 /Server/raspberry-test/
 .env
 /Server/.ssh
+/Server/
 
 Server/private-airnet/authorized_keys
 Server/nginx/reverse_ssh_key.pub
