@@ -2,15 +2,17 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
-Route::post('/register/{mac}', function (Request $request, string $mac) {
-    return "Registering device with MAC {$mac}";
+
+Route::get('/register', function (Request $request, string $mac) {
+    
 });
 
-Route::get('/ping/{mac}', function (Request $request, string $mac) {
-    return shell_exec("ping {$mac}");
+Route::get('/heartbeat', function (Request $request, string $mac) {
+    return $reponse->json(["message", "Heartbeat"]);  
 });
 
 Route::get('/manage-ports', function (Request $request) {
-    return 'Managing ports';
+
 });
