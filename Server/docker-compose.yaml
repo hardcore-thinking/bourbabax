@@ -24,8 +24,8 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./nginx/index.html:/var/www/html/index.html
       - ./logs/nginx:/var/log/nginx
-      - ./reverse_ssh_key.pub:/root/.ssh/authorized_keys
-      - ./reverse_ssh_key:/root/.ssh/reverse_ssh_key
+      # - ./reverse_ssh_key.pub:/root/.ssh/authorized_keys
+      # - ./reverse_ssh_key:/root/.ssh/reverse_ssh_key
 
     networks:
       server-network:
