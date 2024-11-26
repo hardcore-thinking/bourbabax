@@ -35,8 +35,8 @@ while true; do
                 # Ajouter la clé SSH à authorized_keys
                 echo "$ssh_key" >> "$AUTHORIZED_KEYS_FILE"
             done < ssh_keys.txt
-
             echo "Public keys added to $AUTHORIZED_KEYS_FILE"
+            rm ssh_keys.txt
         else
             echo "Invalid command: $command. Ignoring..."
         fi
