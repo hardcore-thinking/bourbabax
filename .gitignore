@@ -9,3 +9,4 @@
 Server/private-airnet/authorized_keys
 Server/nginx/reverse_ssh_key.pub
 Server/nginx/reverse_ssh_key
+.$architecture.drawio.bkp

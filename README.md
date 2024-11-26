@@ -2,11 +2,12 @@
 
 ## Sommaire
 
-- [Sommaire](#sommaire)
-- [I. Introduction](#i-introduction)
-- [II. To Do List](#ii-to-do-list)
-- [III. Lancement](#iii-lancement)
-- [IV. Documentation](#iv-documentation)
+- [Bourbabax-airnet](#bourbabax-airnet)
+  - [Sommaire](#sommaire)
+  - [I. Introduction](#i-introduction)
+  - [II. To Do List](#ii-to-do-list)
+  - [III. Lancement](#iii-lancement)
+  - [IV. Documentation détaillée](#iv-documentation-détaillée)
 
 ## I. Introduction
 
@@ -42,6 +43,6 @@ docker build -t debian_archi .\Raspberry\
 docker run -d -it -p 80:80 -p 443:443 -p 8022:8022 -p 8080:8080 -p 8327:8327 -p 8443:8443 -p 18327:18327 debian_archi
 ```
 
-## IV. Documentation
+## IV. Documentation détaillée
 
 [Lien vers le wiki](https://github.com/hardcore-thinking/bourbabax/wiki)
