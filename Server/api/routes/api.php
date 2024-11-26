@@ -9,7 +9,7 @@ Route::get('/register/{mac}', function (Request $request, string $mac) {
     return "Registering {$mac}";
 });
 
-Route::get('/heartbeat', function (Request $request, string $mac) {
+Route::get('/heartbeat/{mac}', function (Request $request, string $mac) {
     return "Heartbeat from {$mac}";
 });
 
