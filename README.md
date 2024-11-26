@@ -2,12 +2,11 @@
 
 ## Sommaire
 
-- [Bourbabax-airnet](#bourbabax-airnet)
-  - [Sommaire](#sommaire)
-  - [I. Introduction](#i-introduction)
-  - [II. To Do List](#ii-to-do-list)
-  - [III. Lancement](#iii-lancement)
-  - [IV. Documentation](#iv-documentation)
+- [Sommaire](#sommaire)
+- [I. Introduction](#i-introduction)
+- [II. To Do List](#ii-to-do-list)
+- [III. Lancement](#iii-lancement)
+- [IV. Documentation](#iv-documentation)
 
 ## I. Introduction
 
