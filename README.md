@@ -22,7 +22,7 @@ L'architecture est composée de plusieurs blocs :
 
 ## II. To Do List
 
-[Trello]([https://trello.com/b/CA6SATEa/bourebax](https://trello.com/invite/b/672b2e475fbae1639ffe1d94/ATTIfa09d0b4164440de9971bb78d55c1b521048DDC6/bourebax)
+[Trello](https://trello.com/invite/b/672b2e475fbae1639ffe1d94/ATTIfa09d0b4164440de9971bb78d55c1b521048DDC6/bourebax)
 
 ## III. Lancement
 
