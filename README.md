@@ -13,10 +13,10 @@
 Bourbabax-airnet est un projet de simulation d'architecture pour le contrôle de Raspberry à distance.
 L'architecture est composée de plusieurs blocs :
 
-- **Private network** : Chaque groupe de Raspberry est contenu dans un réseau local privé et isolé de tout le reste. Les Raspberry sont configurés de sorte à être accessibles via des tunnels RSSH.
+- **Private network** : Chaque groupe de Raspberry est contenu dans un réseau local privé et isolé de tout le reste. Les Raspberry sont accéssible via des tunnels RSSH.
 - **Serveur Public** : Contient les composants nécessaires pour permettre la connexion entre un client et un réseau de Raspberry. Le serveur public est divisé en plusieurs parties :
   - *API Server* : Permet de faire la liaison entre le client et les Raspberry.
-  - *Private Airnet API* : Se charge de stocker les clés SSH publiques des Raspberry. Il communique en TCP avec l'API Server.
+  - *Private Airnet Server* : Se charge de stocker les clés SSH publiques des Raspberry. Il communique en TCP avec l'API Server.
   - *Database* : Stocke les informations des Raspberry.
 - **Client** : Permet de se connecter à un réseau de Raspberry et de les contrôler à distance.
 
