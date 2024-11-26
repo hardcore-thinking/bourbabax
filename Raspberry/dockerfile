@@ -3,12 +3,11 @@ FROM debian
 EXPOSE 22 80 443 8022 8080 8327 8443 18327
 RUN apt-get -y update; apt-get -y install curl autossh systemctl openssh-client
 
-COPY register.sh /bin
+COPY ./register.sh /bin
 COPY airnet.service /etc/systemd/system
 
 RUN chmod +x /bin/register.sh
 RUN systemctl daemon-reload
 RUN systemctl enable airnet.service
-RUN systemctl start airnet.service
 
 CMD ["systemctl", "start", "airnet.service"]
