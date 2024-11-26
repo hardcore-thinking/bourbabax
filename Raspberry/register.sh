@@ -24,7 +24,7 @@ ping(){
     do
         count+=1 
         echo "$HOST$count" > /home/toto
-        # curl -X POST -d "mac=$MAC&ssh_key=$ssh_key" -A "AirNet/1.0" $API_REGISTER_ENDPOINT
+        # curl -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT
         sleep 1m
     done
 }

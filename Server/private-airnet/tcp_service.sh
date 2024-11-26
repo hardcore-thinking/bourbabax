@@ -13,6 +13,7 @@ chmod 600 "$AUTHORIZED_KEYS_FILE"
 
 echo "Server listening on port $PORT..."
 
+python3 check_who_is_dead.py > /usr/local/bin/test.txt
 # Boucle infinie pour écouter les connexions
 while true; do
     # Intercepter une connexion via netcat

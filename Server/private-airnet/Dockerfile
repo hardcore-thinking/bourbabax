@@ -14,9 +14,9 @@ RUN pip install --no-cache-dir mysql-connector-python
 WORKDIR /usr/local/bin
 COPY ./tcp_service.sh /usr/local/bin
 COPY ./get_public_keys.py /usr/local/bin
-RUN chmod +x /usr/local/bin/tcp_service.sh
+COPY ./check_who_is_dead.py /usr/local/bin
 
 EXPOSE 7880
 
 # Start the TCP service [Server API <> Airnet Private Server]
-CMD ["/usr/local/bin/tcp_service.sh"]
+CMD ["bash","/usr/local/bin/tcp_service.sh"]
