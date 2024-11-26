@@ -16,7 +16,6 @@ services:
       - db
 
     ports:
-      - "80:80" # HTTP
       - "443:443" # HTTPS
       - "2222:22" # SSH port forwarded to 2222 on host
 
@@ -97,3 +96,12 @@ services:
       - "3000:8000"
     volumes:
       - ./api:/app
+
+  reverse-proxy:
+    image: traefik:v3.2
+    command: --api.insecure=true --providers.docker
+    ports:
+      - "80:80"
+      - "8090:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
