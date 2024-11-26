@@ -35,6 +35,7 @@ docker compose -f .\Server\docker-compose.yaml up -d
 ```bash
 docker build -t debian_archi .\Raspberry\
 ```
+2- Lancer les Raspberry
 
 ```bash
 docker run -d -it -p 80:80 -p 443:443 -p 8022:8022 -p 8080:8080 -p 8327:8327 -p 8443:8443 -p 18327:18327 debian_archi
