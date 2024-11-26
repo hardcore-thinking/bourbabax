@@ -4,8 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
-
-Route::get('/register/{mac}', function (Request $request, string $mac) {
+Route::post('/register/{mac}', function (Request $request, string $mac) {
     return "Registering {$mac}";
 });
 
