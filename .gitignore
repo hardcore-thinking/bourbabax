@@ -4,7 +4,8 @@
 /Server/logs/nginx/error.log
 /Server/raspberry-test/
 .env
-/Server/.ssh
+/Server/nginx/SSH_KEYS/reverse_ssh_key
+/Server/nginx/SSH_KEYS/reverse_ssh_key.pub
 
 Server/private-airnet/authorized_keys
 Server/nginx/reverse_ssh_key.pub

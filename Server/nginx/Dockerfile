@@ -1,29 +1,24 @@
 # Use the official Nginx image as a base
-FROM nginx:latest
+FROM nginx:1.21.6
 
-# Install SSH server and create the directory for SSH keys
+# Install SSH server, create the directory for SSH keys, and set root password
 RUN apt-get update && \
-    apt-get install -y openssh-server && \
-    apt-get install -y python3 && \
-    apt-get install -y iputils-ping net-tools nano && \
-    apt install -y netcat-openbsd && \
-    mkdir /var/run/sshd
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN echo "root:bourbabax255" | chpasswd
+    apt-get install -y iputils-ping nano net-tools netcat-openbsd openssh-server python3 && \
+    mkdir /var/run/sshd && \
+    echo "root:bourbabax255" | chpasswd && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY addPublicKeys.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/addPublicKeys.sh
 
-# Copy SSH key for reverse SSH tunnel and set permissions
-COPY ./reverse_ssh_key /root/.ssh/reverse_ssh_key
-RUN chmod 600 /root/.ssh/reverse_ssh_key
+COPY SSH_KEYS/reverse_ssh_key /root/.ssh/reverse_ssh_key
 
+RUN mkdir -p /root/.ssh && \
+    chmod 700 /root/.ssh && \
+    chmod +x /usr/local/bin/addPublicKeys.sh && \
+    chmod 600 /root/.ssh/reverse_ssh_key
 
 # Expose necessary ports
 EXPOSE 80 443 22 2222
 
 # Command to run on container start: starts SSH, runs Nginx, and initiates reverse SSH tunnel
-CMD service ssh start && \
-    ssh -i /root/.ssh/reverse_ssh_key -o "StrictHostKeyChecking=no" -N -R 2222:localhost:22 root@localhost & \
-    nginx -g 'daemon off;'
+CMD ["/bin/sh", "-c", "service ssh start && ssh -i /root/.ssh/reverse_ssh_key -o 'StrictHostKeyChecking=no' -N -R 2222:localhost:22 root@localhost & nginx -g 'daemon off;'"]
