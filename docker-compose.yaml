@@ -107,3 +107,4 @@ services:
       - "8080:8080"     # Traefik dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"  # Permet à Traefik de communiquer avec Docker
+
