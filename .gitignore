@@ -11,3 +11,6 @@ Server/private-airnet/authorized_keys
 Server/ssh-holder/reverse_ssh_key.pub
 Server/ssh-holder/reverse_ssh_key
 .$architecture.drawio.bkp
+Server/ssh-server/authorized_keys/id_ed25519.pub
+Server/ssh-server/ssh-keys/id_ed25519.pub
+Server/ssh-server/ssh-keys/id_ed25519

@@ -5,29 +5,23 @@ networks:
         - subnet: 172.128.0.0/24
 
 services:
-  ssh-holder:
-    container_name: ssh-holder
-
-    build:
-      context: ./rssh
-      dockerfile: Dockerfile
-
-    depends_on:
-      - db
-
-    ports:
-      - "443:443" # HTTPS
-      - "2222:22" # SSH port forwarded to 2222 on host
-
-    labels:
-      - "traefik.http.routers.ssh.rule=Host(`ssh.bourbabax.com`)"
-      - "traefik.http.routers.ssh.entrypoints=ssh-secure"
-      - "traefik.http.services.ssh.loadbalancer.server.port=443"
+  ssh-server:
+    build: 
+      context: ./Server/ssh-server
+    
+    container_name: bourbabax-ssh-server
 
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/index.html:/var/www/html/index.html
-      - ./logs/nginx:/var/log/nginx
+      - ./Server/ssh-server/ssh-keys:/root/ssh-keys
+      - ./Server/ssh-server/authorized_keys:/root/.ssh/authorized_keys
+    
+    ports:
+      - "2222:22"
+    
+    labels:
+      - "traefik.http.routers.ssh-server.rule=Host(`ssh.bourbabax.com`)"
+      - "traefik.http.routers.ssh-server.entrypoints=web"
+      - "traefik.http.services.ssh-server.loadbalancer.server.port=22"
 
     networks:
       server-network:
@@ -35,14 +29,14 @@ services:
 
   db:
     build:
-      context: ./database
+      context: ./Server/database
       dockerfile: Dockerfile
 
     container_name: bourbabax-db
 
     volumes:
-      - ./database/data:/var/lib/mysql
-      - ./database:/app
+      - ./Server/database/data:/var/lib/mysql
+      - ./Server/database:/app
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -76,7 +70,7 @@ services:
 
   debian:
     build:
-      context: ./private-airnet
+      context: ./Server/private-airnet
       dockerfile: Dockerfile
     container_name: bourbabax-private-airnet
     depends_on:
