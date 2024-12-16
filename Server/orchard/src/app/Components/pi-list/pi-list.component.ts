@@ -2,18 +2,22 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PiStat } from '../../Interfaces/pi-stat';
 import { Sort, MatSortModule } from '@angular/material/sort';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-pi-list',
   standalone: true,
-  imports: [CommonModule, MatSortModule],
+  imports: [CommonModule, MatSortModule, MatDividerModule],
   templateUrl: './pi-list.component.html',
   styleUrl: './pi-list.component.scss'
 })
 export class PiListComponent {
   pies: PiStat[] = [
-    { id: 234543, name: "Pie 1", CPU: 10, RAM: 20, Storage: 30, lastPing: new Date() },
-    { id: 765872, name: "Pie 2", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
+    { id: 234543, macAdress: "sauce", port: 2134, name: "Pie 1", CPU: 10, RAM: 20, Storage: 30, lastPing: new Date() },
+    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 2", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
+    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 3", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
+    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 4", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
+    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 5", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
   ];
 
   sortedData: PiStat[];
