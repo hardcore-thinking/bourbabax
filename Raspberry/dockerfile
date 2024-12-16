@@ -1,8 +1,9 @@
 FROM debian
 
-EXPOSE 22 8022 8080 8327 8443 18327
+EXPOSE 22 80 8022 8080 8327 8443 18327
 RUN apt-get -y update; apt-get -y install curl autossh systemctl openssh-client
-
+RUN apt-get install -y nginx
+RUN apt-get install -y mosquitto mosquitto-clients
 COPY ./register.sh /bin
 
 CMD ["bash", "/bin/register.sh"]

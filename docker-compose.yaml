@@ -5,26 +5,23 @@ networks:
         - subnet: 172.128.0.0/24
 
 services:
-  web:
-    container_name: bourbabax-web-server
-
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-
-    depends_on:
-      - db
-
-    ports:
-      - "443:443" # HTTPS
-      - "2222:22" # SSH port forwarded to 2222 on host
+  ssh-server:
+    build: 
+      context: ./Server/ssh-server
+    
+    container_name: bourbabax-ssh-server
 
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/index.html:/var/www/html/index.html
-      - ./logs/nginx:/var/log/nginx
-      # - ./reverse_ssh_key.pub:/root/.ssh/authorized_keys
-      # - ./reverse_ssh_key:/root/.ssh/reverse_ssh_key
+      - ./Server/ssh-server/ssh-keys:/root/ssh-keys
+      - ./Server/ssh-server/authorized_keys:/root/.ssh/authorized_keys
+    
+    ports:
+      - "2222:22"
+    
+    labels:
+      - "traefik.http.routers.ssh-server.rule=Host(`ssh.bourbabax.com`)"
+      - "traefik.http.routers.ssh-server.entrypoints=web"
+      - "traefik.http.services.ssh-server.loadbalancer.server.port=22"
 
     networks:
       server-network:
@@ -32,14 +29,14 @@ services:
 
   db:
     build:
-      context: ./database
+      context: ./Server/database
       dockerfile: Dockerfile
 
     container_name: bourbabax-db
 
     volumes:
-      - ./database/data:/var/lib/mysql
-      - ./database:/app
+      - ./Server/database/data:/var/lib/mysql
+      - ./Server/database:/app
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -73,7 +70,7 @@ services:
 
   debian:
     build:
-      context: ./private-airnet
+      context: ./Server/private-airnet
       dockerfile: Dockerfile
     container_name: bourbabax-private-airnet
     depends_on:
@@ -96,12 +93,17 @@ services:
   #     - "3000:8000"
   #   volumes:
   #     - ./api:/app
+  #   labels:
+  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)" 
 
-  reverse-proxy:
-    image: traefik:v3.2
-    command: --api.insecure=true --providers.docker
+  traefik:
+    image: traefik:v3.2  # Remplacer par la version de Traefik souhaitée
+    command:
+      - "--api.insecure=true"          # Activer l'API de Traefik (non sécurisé)
+      - "--providers.docker=true"      # Activer le provider Docker pour Traefik
+      - "--entrypoints.web.address=:80" # Écouter sur le port 80
     ports:
-      - "80:80"
-      - "8090:8080"
+      - "80:80"         # Trafic HTTP
+      - "8080:8080"     # Traefik dashboard
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - "/var/run/docker.sock:/var/run/docker.sock"  # Permet à Traefik de communiquer avec Docker
