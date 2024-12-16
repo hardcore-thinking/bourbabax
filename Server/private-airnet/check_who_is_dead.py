@@ -15,7 +15,6 @@ conn = mysql.connector.connect(
 # Curseur pour exécuter des requêtes
 cursor = conn.cursor()
 while True:
-    print("ahhhhh")
     # Requête SQL
     query = "SELECT mac_addr, last_seen FROM raspberries;"
     cursor.execute(query)
