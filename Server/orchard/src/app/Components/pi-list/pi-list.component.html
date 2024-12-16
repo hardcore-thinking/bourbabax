@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="titleSuperDiv">
+    <div class="titleDiv">
+      <img src="assets/rasp.png" alt="pi Logo" class="square-img" />
+      <h1 class="mainTitle">Raspberry Pi Orchard</h1>
+    </div>
+  </div>
+  <div class="tableDiv">
+    <table matSort (matSortChange)="sortData($event)">
+      <tr class="tableHeader">
+        <th mat-sort-header="name">Name</th>
+        <th mat-sort-header="macAdress">MAC Adress</th>
+        <th mat-sort-header="port">Port</th>
+        <th mat-sort-header="CPU">CPU</th>
+        <th mat-sort-header="RAM">RAM</th>
+        <th mat-sort-header="Storage">Storage</th>
+        <th mat-sort-header="lastPing">Last Ping</th>
+      </tr>
+      @for (pi of sortedData; track pi) {
+      <tr class="piList">
+        <td class="cell">{{ pi.name }}</td>
+        <td class="cell">{{ pi.macAdress }}</td>
+        <td class="cell">{{ pi.port }}</td>
+        <td class="cell">{{ pi.CPU }}%</td>
+        <td class="cell">{{ pi.RAM }} Go</td>
+        <td class="cell">{{ pi.Storage }} Go</td>
+        <td class="cell">{{ pi.lastPing }}</td>
+      </tr>
+      }
+      <!-- Add more Raspberry Pi stats as needed -->
+    </table>
+  </div>
+</div>
