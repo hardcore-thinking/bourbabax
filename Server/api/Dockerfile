@@ -12,6 +12,7 @@ COPY ./composer.json /var/www/api
 RUN apt update
 RUN apt upgrade
 RUN apt install composer npm php8.2-curl php8.2-mysql php-dom openssl -y
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN npm install
 RUN composer install

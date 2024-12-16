@@ -8,6 +8,7 @@ RUN apt-get update && \
     apt-get install -y iputils-ping net-tools nano && \
     apt install -y netcat-openbsd && \
     mkdir /var/run/sshd
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN echo "root:bourbabax255" | chpasswd
 
@@ -17,6 +18,7 @@ RUN chmod +x /usr/local/bin/addPublicKeys.sh
 # Copy SSH key for reverse SSH tunnel and set permissions
 COPY ./reverse_ssh_key /root/.ssh/reverse_ssh_key
 RUN chmod 600 /root/.ssh/reverse_ssh_key
+
 
 # Expose necessary ports
 EXPOSE 80 443 22 2222
