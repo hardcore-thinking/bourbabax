@@ -7,21 +7,13 @@ networks:
 services:
   ssh-server:
     build: 
-      context: ./Server/ssh-server
-    
-    container_name: bourbabax-ssh-server
-
-    volumes:
-      - ./Server/ssh-server/ssh-keys:/root/ssh-keys
-      - ./Server/ssh-server/authorized_keys:/root/.ssh/authorized_keys
-    
+      context: ./ssh-server
+      dockerfile: /docker/Dockerfile
+    container_name: ssh-server
     ports:
-      - "2222:22"
-    
-    labels:
-      - "traefik.http.routers.ssh-server.rule=Host(`ssh.bourbabax.com`)"
-      - "traefik.http.routers.ssh-server.entrypoints=web"
-      - "traefik.http.services.ssh-server.loadbalancer.server.port=22"
+      - "2222:22"  # Le port local 2222 redirige vers le port 22 du conteneur
+    cap_add:
+      - NET_ADMIN  # Permet la gestion des tunnels réseau
 
     networks:
       server-network:
@@ -29,14 +21,14 @@ services:
 
   db:
     build:
-      context: ./Server/database
-      dockerfile: Dockerfile
+      context: ./database
+      dockerfile: docker/Dockerfile
 
     container_name: bourbabax-db
 
     volumes:
-      - ./Server/database/data:/var/lib/mysql
-      - ./Server/database:/app
+      - ./database/data:/var/lib/mysql
+      - ./database:/app
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -70,8 +62,8 @@ services:
 
   debian:
     build:
-      context: ./Server/private-airnet
-      dockerfile: Dockerfile
+      context: .private-airnet
+      dockerfile: docker/Dockerfile
     container_name: bourbabax-private-airnet
     depends_on:
       - db
@@ -94,17 +86,17 @@ services:
   #   volumes:
   #     - ./api:/app
   #   labels:
-  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)" 
+  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)"
 
   traefik:
-    image: traefik:v3.2  # Remplacer par la version de Traefik souhaitée
+    image: traefik:v3.2 # Remplacer par la version de Traefik souhaitée
     command:
-      - "--api.insecure=true"          # Activer l'API de Traefik (non sécurisé)
-      - "--providers.docker=true"      # Activer le provider Docker pour Traefik
+      - "--api.insecure=true" # Activer l'API de Traefik (non sécurisé)
+      - "--providers.docker=true" # Activer le provider Docker pour Traefik
       - "--entrypoints.web.address=:80" # Écouter sur le port 80
     ports:
-      - "80:80"         # Trafic HTTP
-      - "8080:8080"     # Traefik dashboard
+      - "80:80" # Trafic HTTP
+      - "8080:8080" # Traefik dashboard
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"  # Permet à Traefik de communiquer avec Docker
+      - "/var/run/docker.sock:/var/run/docker.sock" # Permet à Traefik de communiquer avec Docker
 
