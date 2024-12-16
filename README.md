@@ -54,7 +54,7 @@ Le Serveur peut alors se connecter au Raspberry en RSSH. Le client peut se conne
 1 - Exécuter la commande suivante pour lancer les conteneurs du serveur en arrière plan
 
 ```bash
-docker compose -f .\Server\docker-compose.yaml up -d
+docker compose -f .\docker-compose.yaml up -d
 ```
 
 2 - Lancer cette commande pour build les Rasberry (/!\ en dehors du serveur public)
