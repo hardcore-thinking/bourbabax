@@ -101,5 +101,7 @@ main(){
     ping
 }
 
+redis_install.sh
+systemctl start mosquitto.service
 systemctl start nginx
 main
