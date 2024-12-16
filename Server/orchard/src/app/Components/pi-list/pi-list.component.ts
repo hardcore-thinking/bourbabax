@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PiStat } from '../../Interfaces/pi-stat';
 import { Sort, MatSortModule } from '@angular/material/sort';
 import { MatDividerModule } from '@angular/material/divider';
+import { HttpService } from '../../Services/http.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pi-list',
@@ -21,10 +23,21 @@ export class PiListComponent {
   ];
 
   sortedData: PiStat[];
+  obs !: Observable<PiStat[]>;
 
-  constructor() {
-    this.sortedData = this.pies.slice();
+  constructor(private httpService: HttpService) {
+    this.subData();
+    this.sortedData = [];
   }
+
+  subData() {
+    this.obs = this.httpService.getDataObservable();
+    this.obs.subscribe(data => {
+      this.pies = data;
+      this.sortedData = this.pies.slice();
+    });
+  }
+
 
   sortData(sort: Sort) {
     const data = this.pies.slice();
