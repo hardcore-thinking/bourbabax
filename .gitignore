@@ -1,0 +1,12 @@
+/Server/database/data
+/Server/logs
+/Server/logs/nginx/access.log
+/Server/logs/nginx/error.log
+/Server/raspberry-test/
+.env
+/Server/.ssh
+
+Server/private-airnet/authorized_keys
+Server/nginx/reverse_ssh_key.pub
+Server/nginx/reverse_ssh_key
+.$architecture.drawio.bkp

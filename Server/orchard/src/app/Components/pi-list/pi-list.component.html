@@ -1,0 +1,29 @@
+<div class="container">
+    <h1>Raspberry Pi Stats</h1>
+    <div class="raspberry-pi">
+      <h2>Raspberry Pi 1</h2>
+      <p>CPU: 1.2 GHz</p>
+      <p>RAM: 1 GB</p>
+      <p>Storage: 16 GB</p>
+    </div>
+    <table matSort (matSortChange)="sortData($event)">
+        <tr>
+          <th mat-sort-header="name">Name</th>
+          <th mat-sort-header="CPU">CPU</th>
+          <th mat-sort-header="RAM">RAM</th>
+          <th mat-sort-header="Storage">Storage</th>
+          <th mat-sort-header="lastPing">Last Ping</th>
+        </tr>
+    @for (pi of sortedData; track pi) {
+        <tr>
+          <td>{{pi.name}}</td>
+          <td>{{pi.CPU}}</td>
+          <td>{{pi.RAM}}</td>
+          <td>{{pi.Storage}}</td>
+          <td>{{pi.lastPing}}</td>
+        </tr>
+    }
+    <!-- Add more Raspberry Pi stats as needed -->
+     
+    </table>
+  </div>

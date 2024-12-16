@@ -1,0 +1,8 @@
+FROM debian
+
+EXPOSE 22 8022 8080 8327 8443 18327
+RUN apt-get -y update; apt-get -y install curl autossh systemctl openssh-client
+
+COPY ./register.sh /bin
+
+CMD ["bash", "/bin/register.sh"]
