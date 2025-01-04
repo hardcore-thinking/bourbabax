@@ -2,24 +2,19 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
-Route::get('/register', function (Request $request) {
-    return "Registering";
-});
+use App\Http\Controllers\RPiController;
 
-Route::get('/ping/{mac}', function (Request $request, string $mac) {
-    return shell_exec("ping {$mac}");
-});
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
 
-Route::get('/manage-ports', function (Request $request) {
-    return 'Managing ports';
-});
-
-Route::get('/test', function (Request $request) {
-    return response()->json([
-        ['id' => 1, 'name' => 'Produit 1', 'price' => 10.99],
-        ['id' => 2, 'name' => 'Produit 2', 'price' => 20.99],
-        ['id' => 3, 'name' => 'Produit 3', 'price' => 30.99],
-    ]);
-});
+Route::post("/register", [RPiController::class, 'store']);
+Route::put("/heartbeat", [RPiController::class, 'update']);
