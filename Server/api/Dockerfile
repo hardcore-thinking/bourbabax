@@ -1,4 +1,5 @@
 FROM debian:latest
+USER root
 
 EXPOSE 3000
 
