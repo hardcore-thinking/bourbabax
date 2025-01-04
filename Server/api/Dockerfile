@@ -1,5 +1,4 @@
 FROM debian:latest
-USER root
 
 EXPOSE 3000
 
@@ -10,6 +9,7 @@ WORKDIR /var/www/api/
 COPY ./composer.json /var/www/api
 
 # install required packages
+USER root
 RUN apt update
 RUN apt upgrade
 RUN apt install composer npm php8.2-curl php8.2-mysql php-dom openssl -y

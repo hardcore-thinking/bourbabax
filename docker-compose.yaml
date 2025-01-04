@@ -28,7 +28,6 @@ services:
 
     volumes:
       - ./database/data:/var/lib/mysql
-      - ./database:/app
 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
