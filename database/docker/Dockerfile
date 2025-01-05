@@ -7,6 +7,8 @@ EXPOSE 3306
 # Copier les scripts SQL personnalisés
 COPY ./init.sql /docker-entrypoint-initdb.d/init.sql
 
+RUN mysqld --initialize-insecure
+
 # Définir le point d'entrée pour démarrer MySQL
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["mysqld"]
