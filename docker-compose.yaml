@@ -41,7 +41,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ./Server/database/data:/var/lib/mysql
+      - ./Server/database:/app
 
   ##### PHPMYADMIN ############################################################
   phpmyadmin:
