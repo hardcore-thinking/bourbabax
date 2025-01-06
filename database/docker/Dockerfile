@@ -5,7 +5,7 @@ FROM mysql:latest
 EXPOSE 3306
 
 # Copier les scripts SQL personnalisés
-COPY ../init.sql /docker-entrypoint-initdb.d/init.sql
+COPY ../init.sql /docker-entrypoint-initdb.d/
 
 # Définir le point d'entrée pour démarrer MySQL
 ENTRYPOINT ["docker-entrypoint.sh"]
