@@ -108,13 +108,26 @@ class RPiController extends Controller {
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        // updated last seen date in database
-        DB::table("raspberries")->where("mac_addr", $mac)->update([ "last_seen" => now() ]);
+        // check if mac already exists in DB
+        $macExists = DB::table("raspberries")->where("mac_addr", $mac)->first() != null;
 
-        // return status for successful update
-        return response()->json([
-            "status" => Response::HTTP_OK
-        ], Response::HTTP_OK);
+        if ($macExists) {
+            // updated last seen date in database
+            DB::table("raspberries")->where("mac_addr", $mac)->update([ "last_seen" => now() ]);
+
+            // return status for successful update
+            return response()->json([
+                "status" => Response::HTTP_OK
+            ], Response::HTTP_OK);
+        }
+
+        else {
+            // can't update non-existing mac entry
+            return response()->json([
+                "status" => Response::HTTP_NOT_FOUND,
+                "reason" => "Cannot update a non-existing MAC entry. Make sure there is no typo in the MAC address."
+            ], Response::HTTP_NOT_FOUND);
+        }
     }
 
     // PURPOSE: Remove the specified resource from storage.
@@ -122,13 +135,3 @@ class RPiController extends Controller {
         return;
     }
 }
-
-/*
-$body = $request->getContent();
-
-return response()->json([
-    "status" => 201,
-    "query" => $request->all(),
-    "body" => $request->getContent()
-]);
-*/
