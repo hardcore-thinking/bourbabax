@@ -109,7 +109,6 @@ services:
     image: eclipse-mosquitto
     ports:
       - "1883:1883"
-      - "1884:1884"
     volumes:
       - "./mosquitto/config:/mosquitto/config"
       - "./mosquitto/data:/mosquitto/data"
