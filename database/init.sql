@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `raspberries` (
     `mac_addr` CHAR(17) NOT NULL,
     `port` INT,
     `last_seen` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `ssh_key` VARCHAR(1024),
+    `ssh_key` VARCHAR(4096),
     PRIMARY KEY (`id`)
 );
 
