@@ -71,10 +71,7 @@ class RPiController extends Controller {
             }
 
             // return assigned ports
-            return response()->json([
-                "status" => Response::HTTP_CREATED,
-                "port" => $port
-            ], Response::HTTP_CREATED);
+            return response()->json($port, Response::HTTP_CREATED);
         }
         
         // if it DOES exists
