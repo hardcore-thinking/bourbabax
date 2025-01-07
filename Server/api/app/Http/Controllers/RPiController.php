@@ -54,7 +54,7 @@ class RPiController extends Controller {
                     DB::table("raspberries")->insert([
                         [
                             "id" => $id,
-                            "mac_addr" => $mac,
+                            "mac_addr" => strtoupper($mac),
                             "port" => $port,
                             "last_seen" => now(),
                             "ssh_key" => $sshKey
