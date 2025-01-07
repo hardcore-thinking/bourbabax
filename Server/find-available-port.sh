@@ -6,13 +6,13 @@ do
     for port in $ports
     do
         #port is reserve
-        if [ $i -le 1024]
+        if [ $i -le 1024 ]
         then
             continue
         fi
 
         # port is unavailable
-        if [ $1=$port ]
+        if [ $i = $port ]
         then
             unavailable=true
             break
