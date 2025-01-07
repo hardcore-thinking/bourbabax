@@ -5,7 +5,7 @@ do
     unavailable=false
     for port in $ports
     do
-        #port is reserve
+        # port is reserve
         if [ $port -le 1024 ]
         then
             continue
@@ -22,7 +22,7 @@ do
     # port is available
     if [ $unavailable == false ]
     then
-        echo $port
+        echo $i
         break
     fi
 done
