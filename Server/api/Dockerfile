@@ -22,4 +22,6 @@ COPY ./php.ini /etc/php/8.2/cli/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
+RUN php artisan key:generate
+
 CMD php artisan serve --host 0.0.0.0

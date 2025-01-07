@@ -51,6 +51,7 @@ class RPiController extends Controller {
                     // insert new entry for new RPi
                     DB::table("raspberries")->insert([
                         [
+                            "id" => null,
                             "mac_addr" => $mac,
                             "port" => $port,
                             "last_seen" => now(),
