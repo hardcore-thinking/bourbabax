@@ -48,10 +48,12 @@ class RPiController extends Controller {
                 if (!$usedPorts->contains("port", $requestedPort)) {
                     $port = $requestedPort;
 
+                    $id = DB::table("raspberries")->max("id") + 1;
+
                     // insert new entry for new RPi
                     DB::table("raspberries")->insert([
                         [
-                            "id" => null,
+                            "id" => $id,
                             "mac_addr" => $mac,
                             "port" => $port,
                             "last_seen" => now(),
