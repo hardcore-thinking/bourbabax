@@ -6,7 +6,7 @@ do
     for port in $ports
     do
         #port is reserve
-        if [ $i -le 1024 ]
+        if [ $port -le 1024 ]
         then
             continue
         fi
