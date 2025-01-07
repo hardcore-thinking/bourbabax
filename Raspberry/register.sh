@@ -1,5 +1,10 @@
 #!/bin/bash
 
+HOST=""
+USER=""
+API_REGISTER_ENDPOINT=""
+MAC=""
+
 generate_ssh_key(){
     if [ loggingMode == "NORMAL" -o loggingMode == "DEBUG" ]; then
         echo "Generating SSH key"
@@ -71,7 +76,7 @@ main(){
     esac
     done
     
-    # setup "register"
+    setup "register"
 
 
     echo "Local ports: $ssh_key"
@@ -79,7 +84,15 @@ main(){
     IFS=',' read -ra ssh_key <<< "$ssh_key"
 
     # Get ports from API with the user agent and the mac address
-    REMOTE_PORTS=$(curl -X POST -d "mac=$MAC&ssh_key=$ssh_key" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
+    REMOTE_PORTS=$(curl --request POST --verbose \
+                        --data \
+                        "{ \
+                            \"mac\": \"$MAC\", \
+                            \"sshKey\": \"$ssh_key\", \
+                            \"ports\": [15] \
+                        }" \
+                        --user-agent "AirNet/1.0" \
+                        --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
 
     echo "Getting ports from API: $API_REGISTER_ENDPOINT, mac=$MAC, ports=$LOCAL_PORTS"
     # REMOTE_PORTS=8022,8080,8443,18327
@@ -98,6 +111,13 @@ main(){
             autossh -M 0 -f -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -R $REMOTE_PORT:localhost:$LOCAL_PORT $USER@$HOST
             systemctl start mosquitto.service
         fi
+    done
+
+    while [ 1 ]; do
+        mosquitto_pub -L "mqtt://test:test@212.83.155.128:1884/test_topic/test1" \
+                      -i $MAC \
+                      -t "test_topic" -m "Test message 123456789123456789123456789123456789123456" -d
+        sleep 5
     done
 }
 
