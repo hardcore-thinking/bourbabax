@@ -100,3 +100,5 @@ main(){
         fi
     done
 }
+
+main
