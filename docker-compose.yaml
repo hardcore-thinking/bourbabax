@@ -104,7 +104,7 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock" # Permet à Traefik de communiquer avec Docker
 
-##### MOSQUITTO BROKER ########################################################
+  ##### MOSQUITTO BROKER ########################################################
   mosquitto_broker:
     image: eclipse-mosquitto
     ports:
