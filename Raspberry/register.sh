@@ -99,3 +99,4 @@ main(){
             systemctl start mosquitto.service
         fi
     done
+}
