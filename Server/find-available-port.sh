@@ -16,7 +16,7 @@ do
         then
             unavailable=true
             break
-        if
+        fi
     done
 
     # port is available
