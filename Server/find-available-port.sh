@@ -15,7 +15,8 @@ do
         if [ $1=$port ]
         then
             unavailable=true
-        break
+            break
+        if
     done
 
     # port is available
