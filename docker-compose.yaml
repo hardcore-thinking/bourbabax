@@ -104,5 +104,19 @@ services:
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock" # Permet à Traefik de communiquer avec Docker
 
+##### MOSQUITTO BROKER ########################################################
+  mosquitto_broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "1884:1884"
+    volumes:
+      - "./mosquitto/config:/mosquitto/config"
+      - "./mosquitto/data:/mosquitto/data"
+      - "./mosquitto/log:/mosquitto/log"
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.7
+
 volumes:
   mysql_data:
