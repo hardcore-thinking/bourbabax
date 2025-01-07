@@ -1,6 +1,6 @@
 ports=$(netstat -lntu | grep tcp | awk '{ print $4 }' | cut -d: -f2 | sort -V | sed '/^$/d')
 
-for (i = 1025; i < 65536; i++ )
+for (( i = 1025; i < 65536; i++ ))
 do
     unavailable=false
     for port in $ports
