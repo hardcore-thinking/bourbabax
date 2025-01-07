@@ -41,8 +41,8 @@ class RPiController extends Controller {
         // if it DOESN'T exists
         if (!$macExists) {
             // insert MAC and SSH key
-            $port = -1;
-            
+            $port = shell_exec("bash /bin/find-available-port")
+
             // get available port
             foreach ($requestedPorts as $requestedPort) {
                 if (!$usedPorts->contains("port", $requestedPort)) {
