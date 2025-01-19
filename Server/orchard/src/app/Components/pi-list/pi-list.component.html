@@ -8,22 +8,22 @@
   <div class="tableDiv">
     <table matSort (matSortChange)="sortData($event)">
       <tr class="tableHeader">
-        <th mat-sort-header="name">Name</th>
-        <th mat-sort-header="macAdress">MAC Adress</th>
+        <th mat-sort-header="id">ID</th>
+        <th mat-sort-header="macAddress">MAC Address</th>
         <th mat-sort-header="port">Port</th>
-        <th mat-sort-header="CPU">CPU</th>
+        <!-- <th mat-sort-header="CPU">CPU</th>
         <th mat-sort-header="RAM">RAM</th>
-        <th mat-sort-header="Storage">Storage</th>
+        <th mat-sort-header="Storage">Storage</th> -->
         <th mat-sort-header="lastPing">Last Ping</th>
       </tr>
       @for (pi of sortedData; track pi) {
       <tr class="piList">
-        <td class="cell">{{ pi.name }}</td>
-        <td class="cell">{{ pi.macAdress }}</td>
+        <td class="cell">{{ pi.id }}</td>
+        <td class="cell">{{ pi.macAddress }}</td>
         <td class="cell">{{ pi.port }}</td>
-        <td class="cell" [ngStyle]="{'background-color': getColor(pi.CPU)}">{{ pi.CPU }}%</td>
-        <td class="cell" [ngStyle]="{'background-color': getColor(pi.RAM)}">{{ pi.RAM }} Go</td>
-        <td class="cell" [ngStyle]="{'background-color': getColor(pi.Storage)}">{{ pi.Storage }} Go</td>
+        <!-- <td class="cell" [ngStyle]="{'background-color': getColor(pi.CPU, 100)}">{{ pi.CPU }}%</td>
+        <td class="cell" [ngStyle]="{'background-color': getColor(pi.RAM, 2000)}">{{ pi.RAM }} Mo</td>
+        <td class="cell" [ngStyle]="{'background-color': getColor(pi.Storage, 50)}">{{ pi.Storage }} Go</td> -->
         <td class="cell">{{ pi.lastPing }}</td>
       </tr>
       }

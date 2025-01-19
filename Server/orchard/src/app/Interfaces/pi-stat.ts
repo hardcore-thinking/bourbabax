@@ -1,10 +1,10 @@
 export interface PiStat {
     id: number;
-    name: string;
-    macAdress: string;
+    name?: string;
+    macAddress: string;
     port: number;
-    CPU: number;
-    RAM: number;
-    Storage: number;
+    CPU?: number;
+    RAM?: number;
+    Storage?: number;
     lastPing: Date;
 }

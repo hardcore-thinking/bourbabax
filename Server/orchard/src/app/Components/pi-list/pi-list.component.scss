@@ -40,8 +40,10 @@
 }
 
 .tableDiv {
+  display: flex;
   padding: 2em;
   font-size: 1.1em;
+  justify-content: center;
 }
 
 .divider {

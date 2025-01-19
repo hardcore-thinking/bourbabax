@@ -6,6 +6,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { HttpService } from '../../Services/http.service';
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-pi-list',
   standalone: true,
@@ -14,27 +15,21 @@ import { Observable } from 'rxjs';
   styleUrl: './pi-list.component.scss'
 })
 export class PiListComponent {
-  pies: PiStat[] = [
-    { id: 234543, macAdress: "00:1B:44:11:3A:B7", port: 2134, name: "Pie 1", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
-    { id: 765872, macAdress: "00:1B:44:11:3A:B8", port: 2134, name: "Pie 2", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
-    { id: 765873, macAdress: "00:1B:44:11:3A:B9", port: 2134, name: "Pie 3", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
-    { id: 765874, macAdress: "00:1B:44:11:3A:BA", port: 2134, name: "Pie 4", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
-    { id: 765875, macAdress: "00:1B:44:11:3A:BB", port: 2134, name: "Pie 5", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
-  ];
+  pies: PiStat[] = [ ];
 
   sortedData: PiStat[];
   obs !: Observable<PiStat[]>;
   constructor(private httpService: HttpService) {
     this.subData();
     this.sortedData = [];
-    this.sortData({ active: '', direction: '' });
+    
   }
 
   subData() {
     this.obs = this.httpService.getDataObservable();
     this.obs.subscribe(data => {
       this.pies = data;
-      this.sortedData = this.pies.slice();
+      this.sortData({ active: '', direction: '' });
     });
   }
 
@@ -49,14 +44,14 @@ export class PiListComponent {
     this.sortedData = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
-        case 'name':
-          return compare(a.name, b.name, isAsc);
+        case 'id':
+          return compare(a.id, b.id, isAsc);
         case 'CPU':
-          return compare(a.CPU, b.CPU, isAsc);
-        case 'RAM':
-          return compare(a.RAM, b.RAM, isAsc);
-        case 'Storage':
-          return compare(a.Storage, b.Storage, isAsc);
+        //   return compare(a.CPU, b.CPU, isAsc);
+        // case 'RAM':
+        //   return compare(a.RAM, b.RAM, isAsc);
+        // case 'Storage':
+        //   return compare(a.Storage, b.Storage, isAsc);
         // case 'lastPing':
         //   return compare(a.lastPing, b.lastPing, isAsc);
         default:
@@ -65,9 +60,9 @@ export class PiListComponent {
     });
   }
 
-  getColor(value: number) {
+  getColor(value: number, scale: number) {
     //lerp from 255 to 0
-    let lerp = Math.floor(255 * (1 - value / 100));
+    let lerp = Math.floor(200 * (1 - value / scale));
     return `rgb(255, ${lerp}, ${lerp})`;
   }
 }
