@@ -16,6 +16,6 @@ use App\Http\Controllers\RPiController;
 |
 */
 
-Route::get("/register", [RPiController::class, 'index']);
+Route::get("/list-all", [RPiController::class, 'index']);
 Route::post("/register", [RPiController::class, 'store']);
 Route::put("/heartbeat", [RPiController::class, 'update']);
