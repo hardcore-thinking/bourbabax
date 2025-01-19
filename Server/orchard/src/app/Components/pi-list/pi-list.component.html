@@ -21,9 +21,9 @@
         <td class="cell">{{ pi.name }}</td>
         <td class="cell">{{ pi.macAdress }}</td>
         <td class="cell">{{ pi.port }}</td>
-        <td class="cell">{{ pi.CPU }}%</td>
-        <td class="cell">{{ pi.RAM }} Go</td>
-        <td class="cell">{{ pi.Storage }} Go</td>
+        <td class="cell" [ngStyle]="{'background-color': getColor(pi.CPU)}">{{ pi.CPU }}%</td>
+        <td class="cell" [ngStyle]="{'background-color': getColor(pi.RAM)}">{{ pi.RAM }} Go</td>
+        <td class="cell" [ngStyle]="{'background-color': getColor(pi.Storage)}">{{ pi.Storage }} Go</td>
         <td class="cell">{{ pi.lastPing }}</td>
       </tr>
       }
