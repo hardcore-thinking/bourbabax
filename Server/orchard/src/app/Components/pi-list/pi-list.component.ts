@@ -15,19 +15,19 @@ import { Observable } from 'rxjs';
 })
 export class PiListComponent {
   pies: PiStat[] = [
-    { id: 234543, macAdress: "sauce", port: 2134, name: "Pie 1", CPU: 10, RAM: 20, Storage: 30, lastPing: new Date() },
-    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 2", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
-    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 3", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
-    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 4", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
-    { id: 765872, macAdress: "sauce", port: 2134, name: "Pie 5", CPU: 20, RAM: 10, Storage: 70, lastPing: new Date() },
+    { id: 234543, macAdress: "00:1B:44:11:3A:B7", port: 2134, name: "Pie 1", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
+    { id: 765872, macAdress: "00:1B:44:11:3A:B8", port: 2134, name: "Pie 2", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
+    { id: 765873, macAdress: "00:1B:44:11:3A:B9", port: 2134, name: "Pie 3", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
+    { id: 765874, macAdress: "00:1B:44:11:3A:BA", port: 2134, name: "Pie 4", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
+    { id: 765875, macAdress: "00:1B:44:11:3A:BB", port: 2134, name: "Pie 5", CPU: Math.floor(Math.random() * 100), RAM: Math.floor(Math.random() * 100), Storage: Math.floor(Math.random() * 100), lastPing: new Date() },
   ];
 
   sortedData: PiStat[];
   obs !: Observable<PiStat[]>;
-
   constructor(private httpService: HttpService) {
     this.subData();
     this.sortedData = [];
+    this.sortData({ active: '', direction: '' });
   }
 
   subData() {
@@ -64,8 +64,16 @@ export class PiListComponent {
       }
     });
   }
+
+  getColor(value: number) {
+    //lerp from 255 to 0
+    let lerp = Math.floor(255 * (1 - value / 100));
+    return `rgb(255, ${lerp}, ${lerp})`;
+  }
 }
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+
