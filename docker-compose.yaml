@@ -86,23 +86,45 @@ services:
     networks:
       server-network:
         ipv4_address: 172.128.0.6
-  #   volumes:
-  #     - ./api:/app
-  #   labels:
-  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)
-  
+    labels:
+      - "traefik.enable=true" # Activer Traefik
+      - "traefik.http.routers.api.rule=Host(`airnet-api.bourbabax.com`)" # Nom de domaine de l'API
+      - "traefik.http.routers.api.entrypoints=websecure" # Entrée HTTPS
+      - "traefik.http.routers.api.tls.certresolver=myresolver" # Certificat
+
   ##### TRAEFIK ###############################################################
   traefik:
-    image: traefik:v3.2 # Remplacer par la version de Traefik souhaitée
+    image: traefik:v3.3
+    container_name: traefik
+    restart: always
     command:
-      - "--api.insecure=true" # Activer l'API de Traefik (non sécurisé)
-      - "--providers.docker=true" # Activer le provider Docker pour Traefik
-      - "--entrypoints.web.address=:80" # Écouter sur le port 80
+      - "--api.insecure=true" # Sécurisé (désactive l'API non authentifiée)
+      - "--providers.docker=true" # Activer le provider Docker (récupère les informations des conteneurs)
+      - "--providers.docker.network=server-network" # Spécifie le réseau Docker
+      - "--entrypoints.web.address=:80" # HTTP
+      - "--entrypoints.websecure.address=:443" # HTTPS
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true" # Activer le challenge HTTP
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web" # Entrée HTTP
+      - "--certificatesresolvers.myresolver.acme.email=airlux@example.com" # Email de contact
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Stockage des certificats
     ports:
       - "80:80" # Trafic HTTP
-      - "8080:8080" # Traefik dashboard
+      - "443:443" # Trafic HTTPS
+      - "8080:8080" # Tableau de bord Traefik
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock" # Permet à Traefik de communiquer avec Docker
+      - "/var/run/docker.sock:/var/run/docker.sock:ro" # Accès à l'API Docker
+      - "./letsencrypt:/letsencrypt" # Stockage des certificats
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.10
+    labels:
+      - "traefik.enable=true" # Activer Traefik
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`dashboard.bourbabax.com`)" # Nom de domaine
+      - "traefik.http.routers.traefik-dashboard.service=api@internal" # Service interne
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure" # Entrée HTTPS
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver" # Certificat
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$abcdef$$2xYdlNBVZklkK3mSgfhsL1" # Authentification
 
 volumes:
   mysql_data:
+  letsencrypt:
