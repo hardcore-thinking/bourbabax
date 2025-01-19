@@ -90,8 +90,7 @@ services:
   #     - ./api:/app
   #   labels:
   #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)
-  "
-
+  
   ##### TRAEFIK ###############################################################
   traefik:
     image: traefik:v3.2 # Remplacer par la version de Traefik souhaitée
