@@ -11,7 +11,12 @@ use Illuminate\Database\Schema\Blueprint;
 class RPiController extends Controller {
     // PURPOSE: Display a listing of the resource.
     public function index() {
-        return;        
+        $raspberries = DB::table("raspberries")->get();        
+
+        return response()->json([
+            "status" => Response::HTTP_OK,
+            "raspberries" => $raspberries
+        ], Response::HTTP_OK);  
     }
 
     // PURPOSE: Store a newly created resource in storage (for /register route).

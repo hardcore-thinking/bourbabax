@@ -89,7 +89,8 @@ services:
   #   volumes:
   #     - ./api:/app
   #   labels:
-  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)"
+  #     - "traefik.http.routers.web.rule=Host(`airnet-api.bourbabax.com`)
+  "
 
   ##### TRAEFIK ###############################################################
   traefik:
