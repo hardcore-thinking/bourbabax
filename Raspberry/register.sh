@@ -29,7 +29,7 @@ heartbeat(){
         response=$(curl --request PUT --data "{\"mac\": \"$MAC\"}" --write-out '%{http_code}' --output /dev/null --user-agent "AirNet/1.0" $API_REGISTER_ENDPOINT)
         echo $response
         if [ $? -ne '0' ] || [ $response -ne '200' ]; then
-            sleep 5s
+            sleep 5m
             register
         fi
         sleep 5m
