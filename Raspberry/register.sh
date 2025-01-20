@@ -114,9 +114,8 @@ main(){
     done
 
     while [ 1 ]; do
-        mosquitto_pub -L "mqtt://test:test@212.83.155.128:1883/test_topic/test1" \
-                      -i $MAC \
-                      -t "test_topic" -m "Test message 123456789123456789123456789123456789123456" -d
+        mosquitto_sub -L "mqtt://test:test@212.83.155.128:1883/test_topic/#" \
+                      -i $MAC
         sleep 5
     done
 }
