@@ -26,18 +26,19 @@ heartbeat(){
     setup "heartbeat"
     while true
     do
-        # --data "{'mac': $MAC}"
-        response=$(curl --request PUT --write-out '%{http_code}' --output /dev/null --user-agent "AirNet/1.0" $API_REGISTER_ENDPOINT)
-        echo $response > /tmp/toto.txt
-        if [ $? -ne 0 ] || [ $response -ne '200' ]; then
+        response=$(curl --request PUT --data "{\"mac\": \"$MAC\"}" --write-out '%{http_code}' --output /dev/null --user-agent "AirNet/1.0" $API_REGISTER_ENDPOINT)
+        echo $response
+        if [ $? -ne '0' ] || [ $response -ne '200' ]; then
+            sleep 5s
             register
-            sleep 5m
         fi
         sleep 5m
     done
 }
 
 register(){
+    setup "register"
+
     # create an array of ports
     IFS=',' read -ra ssh_key <<< "$ssh_key"
 
@@ -51,7 +52,8 @@ register(){
                         }" \
                         --user-agent "AirNet/1.0" \
                         --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
-    if [ $? -ne '0' ] || [ $REMOTE_PORT != "200" ]; then
+    echo "####################################################################################################################### $? $REMOTE_PORTS"
+    if [ $? -ne '0' ] || [ [ $REMOTE_PORTS != "201" ] && [ $REMOTE_PORTS != "304" ] ]; then
         sleep 5m
         register
     fi
@@ -73,7 +75,6 @@ register(){
             systemctl start mosquitto.service
         fi
     done
-
 
     heartbeat
 }
@@ -109,9 +110,6 @@ main(){
     esac
     done
     
-    setup "register"
-
-
     echo "Local ports: $ssh_key"
 
     register
@@ -121,8 +119,6 @@ main(){
     #                  -i $MAC
     #    sleep 5
     #done
-
-    heartbeat
 }
 
 main
