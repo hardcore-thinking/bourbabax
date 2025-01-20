@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Database\Schema\Blueprint;
 
 class RPiController extends Controller {
-    // PURPOSE: Display a listing of the resource.
+    // PURPOSE: Display a listing of the resource (/list-all).
     public function index() {
         $raspberries = DB::table("raspberries")->get();        
 

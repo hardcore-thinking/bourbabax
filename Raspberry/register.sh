@@ -20,31 +20,60 @@ setup(){
     # generate_ssh_key
 }
 
-ineedport(){
-    setup "manageport"
-    while true
-    do
-        response=$(curl --write-out '%{http_code}' --silent --output nul -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
-        if [ $? -eq 0 -a $response -eq 200 ]; then
-            ping
-        fi
-        sleep 1m
-    done
-
-}
 
 ## Fonction d'envoi du ping
-ping(){
+heartbeat(){
     setup "heartbeat"
     while true
     do
         response=$(curl --write-out '%{http_code}' --silent --output nul -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
         echo $response
         if [ $? -ne 0 -o $response -ne 200 ]; then
-            ineedport
+            register
         fi
-        sleep 1m
+        sleep 5m
     done
+}
+
+register(){
+    # create an array of ports
+    IFS=',' read -ra ssh_key <<< "$ssh_key"
+
+    # Get ports from API with the user agent and the mac address
+    REMOTE_PORTS=$(curl --request POST --verbose \
+                        --data \
+                        "{ \
+                            \"mac\": \"$MAC\", \
+                            \"sshKey\": \"$ssh_key\", \
+                            \"ports\": [15] \
+                        }" \
+                        --user-agent "AirNet/1.0" \
+                        --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
+    if [ $? -ne 0 -o $REMOTE_PORT -ne 200 ]; then
+        sleep 5m
+        register
+    fi
+    echo "Getting ports from API: $API_REGISTER_ENDPOINT, mac=$MAC, ports=$LOCAL_PORTS"
+    # REMOTE_PORTS=8022,8080,8443,18327
+    echo "Remote ports: $REMOTE_PORTS"
+    # create an array of ports
+    IFS=',' read -ra REMOTE_PORTS <<< "$REMOTE_PORTS"
+
+    # Loop over each port and create a reverse SSH tunnel from the raspberry to the server
+    for i in "${!LOCAL_PORTS[@]}"; do
+        LOCAL_PORT=${LOCAL_PORTS[$i]}
+        REMOTE_PORT=${REMOTE_PORTS[$i]}
+        echo "Checking if port $LOCAL_PORT is used"
+        if lsof -Pi :$LOCAL_PORT -sTCP:LISTEN -t >/dev/null ; then
+            echo "Local port $LOCAL_PORT is used"
+            echo "Creating reverse SSH tunnel for port $LOCAL_PORT to $REMOTE_PORT"
+            autossh -M 0 -f -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -R $REMOTE_PORT:localhost:$LOCAL_PORT $USER@$HOST
+            systemctl start mosquitto.service
+        fi
+    done
+
+
+    heartbeat
 }
 
 main(){
@@ -80,44 +109,16 @@ main(){
 
 
     echo "Local ports: $ssh_key"
-    # create an array of ports
-    IFS=',' read -ra ssh_key <<< "$ssh_key"
 
-    # Get ports from API with the user agent and the mac address
-    REMOTE_PORTS=$(curl --request POST --verbose \
-                        --data \
-                        "{ \
-                            \"mac\": \"$MAC\", \
-                            \"sshKey\": \"$ssh_key\", \
-                            \"ports\": [15] \
-                        }" \
-                        --user-agent "AirNet/1.0" \
-                        --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
+    register
 
-    echo "Getting ports from API: $API_REGISTER_ENDPOINT, mac=$MAC, ports=$LOCAL_PORTS"
-    # REMOTE_PORTS=8022,8080,8443,18327
-    echo "Remote ports: $REMOTE_PORTS"
-    # create an array of ports
-    IFS=',' read -ra REMOTE_PORTS <<< "$REMOTE_PORTS"
+    #while [ 1 ]; do
+    #    mosquitto_sub -L "mqtt://test:test@212.83.155.128:1883/test_topic/#" \
+    #                  -i $MAC
+    #    sleep 5
+    #done
 
-    # Loop over each port and create a reverse SSH tunnel from the raspberry to the server
-    for i in "${!LOCAL_PORTS[@]}"; do
-        LOCAL_PORT=${LOCAL_PORTS[$i]}
-        REMOTE_PORT=${REMOTE_PORTS[$i]}
-        echo "Checking if port $LOCAL_PORT is used"
-        if lsof -Pi :$LOCAL_PORT -sTCP:LISTEN -t >/dev/null ; then
-            echo "Local port $LOCAL_PORT is used"
-            echo "Creating reverse SSH tunnel for port $LOCAL_PORT to $REMOTE_PORT"
-            autossh -M 0 -f -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -R $REMOTE_PORT:localhost:$LOCAL_PORT $USER@$HOST
-            systemctl start mosquitto.service
-        fi
-    done
-
-    while [ 1 ]; do
-        mosquitto_sub -L "mqtt://test:test@212.83.155.128:1883/test_topic/#" \
-                      -i $MAC
-        sleep 5
-    done
+    heartbeat
 }
 
 main
