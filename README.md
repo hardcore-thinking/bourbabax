@@ -25,10 +25,20 @@ L'architecture est composée de trois bloc principaux :
 
 L'ensemble des composants de l'architecture sont conteneurisés avec Docker.
 
-- **Serveur Public** : Debian, Traefik
-- **API Server** : Laravel, PHP
+### Serveur publique:
+
+- **proxy** :  Traefik
+- **API** : Laravel, PHP
 - **Private Airnet Server** : Debian, OpenSSH, Python, TCP
 - **Database** : MySQL
+- **Server Web** : nginx
+
+### Raspberry
+- **server web** : nginx
+- **Database** : redis, MQTTBroker
+
+### Externe
+- **Database** : TimeSeries
 
 ## Fonctionnement
 
@@ -53,7 +63,7 @@ Le Serveur peut alors se connecter au Raspberry en RSSH. Le client peut se conne
 
 #### Mise en place:
 
-1. copié ce répo git sur votre serveur publique et sur votre machine locale
+1. copié ce repo git sur votre serveur publique et sur votre machine locale
 
 2. récupérer le fichier bourebabax_api_env.zip sur le google drive : https://drive.google.com/drive/folders/1BwRkAsB2sx4wodzNn2EeorPjZMjjTId-?usp=sharing et le mettre sur votre serveur publique
 
