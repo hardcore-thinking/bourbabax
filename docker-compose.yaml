@@ -105,7 +105,7 @@ services:
       - "--entrypoints.websecure.address=:443" # HTTPS
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true" # Activer le challenge HTTP
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web" # Entrée HTTP
-      - "--certificatesresolvers.myresolver.acme.email=airlux@example.com" # Email de contact
+      - "--certificatesresolvers.myresolver.acme.email=zombie@gmail.com" # Email de contact
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Stockage des certificats
     ports:
       - "80:80" # Trafic HTTP
