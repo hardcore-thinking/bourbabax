@@ -65,7 +65,7 @@ Le Serveur peut alors se connecter au Raspberry en RSSH. Le client peut se conne
 
 1. copié ce repo git sur votre serveur publique et sur votre machine locale
 
-2. récupérer le fichier bourebabax_api_env.zip sur ce [lieen google drive](https://drive.google.com/drive/folders/1BwRkAsB2sx4wodzNn2EeorPjZMjjTId-?usp=sharing) et le mettre sur votre serveur publique
+2. récupérer le fichier bourebabax_api_env.zip sur ce [lien google drive](https://drive.google.com/drive/folders/1BwRkAsB2sx4wodzNn2EeorPjZMjjTId-?usp=sharing) et le mettre sur votre serveur publique
 
 3. Extraire le fichier .env et le mettre dans le dossier Bourebabax/Server/api
 
