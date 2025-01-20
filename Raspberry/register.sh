@@ -26,10 +26,12 @@ heartbeat(){
     setup "heartbeat"
     while true
     do
-        response=$(curl --write-out '%{http_code}' --silent --output nul -X POST -d "mac=$MAC" -A "AirNet/1.0" $API_REGISTER_ENDPOINT)
-        echo $response
-        if [ $? -ne 0 -o $response -ne 200 ]; then
+        # --data "{'mac': $MAC}"
+        response=$(curl --request PUT --write-out '%{http_code}' --output /dev/null --user-agent "AirNet/1.0" $API_REGISTER_ENDPOINT)
+        echo $response > /tmp/toto.txt
+        if [ $? -ne 0 ] || [ $response -ne '200' ]; then
             register
+            sleep 5m
         fi
         sleep 5m
     done
@@ -49,7 +51,7 @@ register(){
                         }" \
                         --user-agent "AirNet/1.0" \
                         --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
-    if [ $? -ne 0 -o $REMOTE_PORT -ne 200 ]; then
+    if [ $? -ne '0' ] || [ $REMOTE_PORT != "200" ]; then
         sleep 5m
         register
     fi
@@ -77,6 +79,8 @@ register(){
 }
 
 main(){
+    echo "Launching main" > /tmp/main.log
+
     # find available local ports
     # read locals ports from config file
     LOCAL_PORTS=2222

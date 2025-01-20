@@ -5,10 +5,10 @@ RUN apt-get -y update; apt-get -y install lsof curl autossh systemctl openssh-cl
 RUN apt-get install -y nginx
 RUN apt-get install -y mosquitto mosquitto-clients
 
-#COPY ../redis_install.sh /bin
-#COPY ../register.sh /bin
-#CMD ["bash", "/bin/register.sh"]
+COPY ../redis_install.sh /bin
+COPY ../register.sh /bin
+CMD ["bash", "/bin/register.sh"]
 
-FROM redis:latest
-COPY redis.conf /usr/local/etc/redis/redis.conf
-CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+#FROM redis:latest
+#COPY redis.conf /usr/local/etc/redis/redis.conf
+#CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
