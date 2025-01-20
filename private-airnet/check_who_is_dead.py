@@ -31,7 +31,7 @@ while True:
     print("Done.")
     # Valider la transaction
     conn.commit()
-    time.sleep(60)
+    time.sleep(660)
 
 # Fermer le curseur et la connexion
 cursor.close()

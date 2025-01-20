@@ -52,7 +52,6 @@ register(){
                         }" \
                         --user-agent "AirNet/1.0" \
                         --location $API_REGISTER_ENDPOINT --trace-ascii /dev/stdout)
-    echo "####################################################################################################################### $? $REMOTE_PORTS"
     if [ $? -ne '0' ] || [ [ $REMOTE_PORTS != "201" ] && [ $REMOTE_PORTS != "304" ] ]; then
         sleep 5m
         register
