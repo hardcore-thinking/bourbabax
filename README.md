@@ -51,19 +51,33 @@ Le Serveur peut alors se connecter au Raspberry en RSSH. Le client peut se conne
 
 ### Initialisation & Lancement
 
-1 - Exécuter la commande suivante pour lancer les conteneurs du serveur en arrière plan
+#### Mise en place:
+
+1. copié ce répo git sur votre serveur publique et sur votre machine locale
+
+2. récupérer le fichier bourebabax_api_env.zip sur le google drive : https://drive.google.com/drive/folders/1BwRkAsB2sx4wodzNn2EeorPjZMjjTId-?usp=sharing et le mettre sur votre serveur publique
+
+3. Extraire le fichier .env et le mettre dans le dossier Bourebabax/Server/api
+
+> :warning: le fichier bourebabax_api_env.zip possède un mot de passe que vous devez utiliser pour l'extraction
+
+#### Sur le serveur:
+
+1. Exécuter la commande suivante pour lancer les conteneurs du serveur 
 
 ```bash
 docker compose -f .\docker-compose.yaml up -d
 ```
 
-2 - Lancer cette commande pour build les Rasberry (/!\ en dehors du serveur public)
+#### Sur la machine en locale:
+
+1. Lancer cette commande pour build les Rasberry
 
 ```bash
 docker build -t debian_archi .\Raspberry\
 ```
 
-3 - Lancer les Raspberry (/!\ en dehors du serveur public)
+2. Lancer les Raspberry 
 
 ```bash
 docker run -d -it -p 80:80 -p 443:443 -p 8022:8022 -p 8080:8080 -p 8327:8327 -p 8443:8443 -p 18327:18327 debian_archi
