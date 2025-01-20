@@ -1,5 +1,0 @@
-Connexion via tunnel SSH
-ssh -i ssh-keys/id_ed25519 \
-    -p 2222 \
-    -J root@127.0.0.1:2222 \
-    devuser@bourbabax-debian-target-1
