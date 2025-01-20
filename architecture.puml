@@ -1,0 +1,64 @@
+@startuml Diagrams
+package "Airnet System" {
+    
+    package "NAT" {
+        actor "Bourebaba (client)"
+        package "Esp32 Devices" {
+            [Capteurs] #orange
+            [Actionneurs] #orange
+        }
+        package "Raspberry Pi" {
+            [MQTT Broker (Mosquitto)] #orange
+            [Redis cache] #orange
+            package "Services Locaux" {
+                [HTTP Services] #orange
+                [SSH Services] #orange
+            }
+        }
+    }
+    database "Timeseries DB"
+    node "Public Server" {
+        component "Tunnels SSH Inversés" {
+            component "Ports HTTP Exposés" {
+                [HTTP Ports] #orange
+            }
+            component "Ports TCP Exposés" {
+                [TCP Ports] #orange
+            }
+        }
+        [Airnet API] #orange
+        [Airnet Private Server] #orange
+    }
+
+    component "Traefik (Reverse proxy)" {
+        [Port 80 & 443] #green
+    }
+
+    database "Mysql DB" {
+        map raspberries {
+            ID => Int
+            mac_addr => Char(17)
+            port => Int
+            last_seen => Timestamp
+            ssh_key => Varchar
+        }
+    }
+    
+    actor "Client HTTP"
+    actor "Client SSH/TCP"
+}
+
+"Client HTTP" --> "Traefik (Reverse proxy)": "Connexion HTTP/HTTPS aux services exposés"
+"Client SSH/TCP" --> "Ports TCP Exposés": "Connexion SSh aux service TCP"
+"Traefik (Reverse proxy)" --> "Ports HTTP Exposés": "Routage SSL"
+"Traefik (Reverse proxy)" -[#orange]-> [Airnet API]: "Config dynamique de traefik"
+[Airnet API] <--> "Mysql DB"
+"Mysql DB" --> [Airnet Private Server]: "Mise à jour des clés SSH"
+[Airnet API] -[#red]-> [Airnet Private Server]: "Connexion sur le port 7880"
+"Raspberry Pi" --> "Tunnels SSH Inversés": "Tunnel RSSH (HTTP & TCP)"
+"Raspberry Pi" -[#purple]-> [Airnet API]: "Connextion HTTPS (sign & ping)"
+[Redis cache] --> "Timeseries DB": "Envoi des métriques hors ligne"
+"Esp32 Devices" --> [MQTT Broker (Mosquitto)]: "Communication MQTT (Capteurs & Actionneurs)"
+[MQTT Broker (Mosquitto)] -[#red]-> [Redis cache]: "Stockage temporaire des données"
+"Bourebaba (client)" --> "Services Locaux": Accès aux services locaux
+@enduml

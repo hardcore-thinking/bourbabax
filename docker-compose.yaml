@@ -1,0 +1,130 @@
+networks:
+  server-network:
+    ipam:
+      config:
+        - subnet: 172.128.0.0/24
+
+services:
+  ##### SSH SERVER ############################################################
+  ssh-server:
+    build: 
+      context: ./ssh-server/docker
+      dockerfile: Dockerfile
+    container_name: ssh-server
+    restart: always
+    ports:
+      - "2222:22"  # Le port local 2222 redirige vers le port 22 du conteneur
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.2
+    cap_add:
+      - NET_ADMIN  # Permet la gestion des tunnels réseau
+
+  ##### DATABASE ##############################################################
+  db:
+    build:
+      context: ./database
+      dockerfile: docker/Dockerfile
+    container_name: bourbabax-db
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.3
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  ##### PHPMYADMIN ############################################################
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: bourbabax-phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:80"
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.4
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  ##### PRIVATE AIRNET ########################################################
+  debian:
+    build:
+      context: ./private-airnet
+      dockerfile: docker/Dockerfile
+    container_name: bourbabax-private-airnet
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "7880:7880"
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.5
+
+  ##### API ###################################################################
+  api:
+    build:
+      context: ./Server/api
+      dockerfile: Dockerfile
+    container_name: bourbabax-api
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "3000:8000"
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.6
+    labels:
+      - "traefik.enable=true" # Activer Traefik
+      - "traefik.http.routers.api.rule=Host(`airnet-api.bourbabax.com`)" # Nom de domaine de l'API
+      - "traefik.http.routers.api.entrypoints=websecure" # Entrée HTTPS
+      - "traefik.http.routers.api.tls.certresolver=myresolver" # Certificat
+
+  ##### TRAEFIK ###############################################################
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    restart: always
+    command:
+      - "--api.insecure=true" # Sécurisé (désactive l'API non authentifiée)
+      - "--providers.docker=true" # Activer le provider Docker (récupère les informations des conteneurs)
+      - "--providers.docker.network=server-network" # Spécifie le réseau Docker
+      - "--entrypoints.web.address=:80" # HTTP
+      - "--entrypoints.websecure.address=:443" # HTTPS
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true" # Activer le challenge HTTP
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web" # Entrée HTTP
+      - "--certificatesresolvers.myresolver.acme.email=zombie@gmail.com" # Email de contact
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Stockage des certificats
+    ports:
+      - "80:80" # Trafic HTTP
+      - "443:443" # Trafic HTTPS
+      - "8080:8080" # Tableau de bord Traefik
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro" # Accès à l'API Docker
+      - "./letsencrypt:/letsencrypt" # Stockage des certificats
+    networks:
+      server-network:
+        ipv4_address: 172.128.0.10
+    labels:
+      - "traefik.enable=true" # Activer Traefik
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`dashboard.bourbabax.com`)" # Nom de domaine
+      - "traefik.http.routers.traefik-dashboard.service=api@internal" # Service interne
+      - "traefik.http.routers.traefik-dashboard.entrypoints=websecure" # Entrée HTTPS
+      - "traefik.http.routers.traefik-dashboard.tls.certresolver=myresolver" # Certificat
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$abcdef$$2xYdlNBVZklkK3mSgfhsL1" # Authentification
+
+volumes:
+  mysql_data:
+  letsencrypt:
